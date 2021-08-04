@@ -4,7 +4,7 @@ Deep Keyphrase extraction using BERT.
 
 ## Run in Colab
 
-<a href="https://colab.research.google.com/drive/1MIZHsnsscPK96Sh6va1-LP6ODxidj4Er#scrollTo=uHDBiAw2XXvx">Link to the Notebook</a>
+<a href="https://colab.research.google.com/drive/1MIZHsnsscPK96Sh6va1-LP6ODxidj4Er?usp=sharing">Link to the Notebook</a>
 
 ## Usage
 
@@ -12,6 +12,7 @@ Deep Keyphrase extraction using BERT.
 2. Change the parameters accordingly in `experiments/base_model/params.json`. We recommend keeping batch size of 4 and sequence length of 512, with 6 epochs, if GPU's VRAM is around 11 GB.
 3. For training, run the command `python train.py`
 4. For eval, run the command, `python evaluate.py`
+5. For running prediction on `data/h1_7.txt` file, run `python keyphrase_task.py`
 
 ## Results
 
@@ -26,6 +27,10 @@ On test set, we got:
 3. **Recall**: 0.5201
 4. **Support**: 921
 
+### Prediction on the given text file in `data/h1_7.txt`
+
+['I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']
+
 ## Credits
 
-Modified version of the original repo @ pranav-ust/BERT-keyphrase-extraction
+Modified version of the original repo @ `pranav-ust/BERT-keyphrase-extraction`
