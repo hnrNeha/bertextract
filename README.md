@@ -14,6 +14,8 @@ Deep Keyphrase extraction using BERT.
 4. For eval, run the command, `python evaluate.py`
 5. For running prediction on `data/h1_7.txt` file, run `python keyphrase_task.py`
 
+Python version 3.7
+
 ## Results
 
 ### Subtask 1: Keyphrase Boundary Identification Using BERT
