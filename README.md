@@ -2,9 +2,16 @@
 
 Deep Keyphrase extraction using BERT.
 
+## Run in Colab
+
+<a href="https://colab.research.google.com/drive/1MIZHsnsscPK96Sh6va1-LP6ODxidj4Er#scrollTo=uHDBiAw2XXvx">Link to the Notebook</a>
+
 ## Usage
 
-Run the <a href="https://colab.research.google.com/drive/1MIZHsnsscPK96Sh6va1-LP6ODxidj4Er#scrollTo=uHDBiAw2XXvx">Google Colaboratory</a>
+1. Clone this repository and install `pytorch-pretrained-BERT`
+2. Change the parameters accordingly in `experiments/base_model/params.json`. We recommend keeping batch size of 4 and sequence length of 512, with 6 epochs, if GPU's VRAM is around 11 GB.
+3. For training, run the command `python train.py`
+4. For eval, run the command, `python evaluate.py`
 
 ## Results
 
@@ -21,4 +28,4 @@ On test set, we got:
 
 ## Credits
 
-Modified version of the original repo @ pranav-ust/BERT-keyphrase-extraction.git
+Modified version of the original repo @ pranav-ust/BERT-keyphrase-extraction
