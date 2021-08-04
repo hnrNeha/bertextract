@@ -1,0 +1,5 @@
+__pycache__/
+experiments/base_model/*.tar
+experiments/base_model/*.log
+model/
+
