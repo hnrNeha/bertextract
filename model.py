@@ -60,9 +60,12 @@ class CustomBERTModel(BertModel):
         linear_output = self.linear(lstm_output)
         # linear_output = [batch_size, sequence_length, 2]
 
-        logits = self.crf.decode(linear_output)
-        logits = torch.tensor(logits)
-        logits = torch.reshape(logits, (-1, self.num_labels))
+        # -------------CRF implementation------------------------
+        # logits = self.crf.decode(linear_output)
+        # logits = torch.tensor(logits)
+        # logits = torch.reshape(logits, (-1, self.num_labels))
+
+        logits = linear_output
 
         if labels is not None:
             # a) Calculate loss: loss of I is 30 times more
