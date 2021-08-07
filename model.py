@@ -3,6 +3,7 @@ from torch import nn
 from torch.nn import CrossEntropyLoss
 
 from pytorch_pretrained_bert import BertModel
+from torchcrf import CRF
 
 
 class CustomBERTModel(BertModel):
@@ -32,12 +33,12 @@ class CustomBERTModel(BertModel):
         self.config_hidden_size = config.hidden_size
 
         # Additional layers
-        self.hidden_dim = 256
+        self.hidden_dim = 512
         # Bi-LSTM layer
         self.rnn = nn.LSTM(self.config_hidden_size,
-                           self.hidden_dim, bidirectional=True)
+                           self.hidden_dim // 2, bidirectional=True)
         # Linear layer
-        self.classifier = nn.Linear(self.hidden_dim * 2, num_labels)
+        self.crf = CRF(num_labels, batch_first=True)
 
         self.apply(self.init_bert_weights)
 
@@ -52,13 +53,16 @@ class CustomBERTModel(BertModel):
         lstm_output, (hidden, cell) = self.rnn(sequence_output)
         # lstm_output = [batch_size, sequence_length, 256 * 2]
 
-        # hidden = torch.cat(
-        #     (lstm_output[:, :, :256], lstm_output[:, :, 256:]), dim=-1)
-        # logits = self.classifier(hidden.view(-1, self.hidden_dim * 2))
-        logits = self.classifier(lstm_output)
+        logits = self.crf.decode(lstm_output)
 
         if labels is not None:
-            loss_fct = CrossEntropyLoss()
+            # Calculate loss: loss of I is 30 times more
+            i30 = torch.tensor([30 / 31, 1 / 31], dtype=torch.float32)
+
+            # Calculate loss: loss of O is 30 times more
+            o30 = torch.tensor([1/31, 30/31], dtype=torch.float32)
+
+            loss_fct = CrossEntropyLoss(weight=i30)
             # Only keep active parts of the loss
             if attention_mask is not None:
                 active_loss = attention_mask.view(-1) == 1
