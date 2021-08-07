@@ -33,6 +33,12 @@ On test set, we got:
 
 ['I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']
 
+## Changes after the test on Aug 7, 2021
+
+- Implemented a custom BERT Model, applying Bi-LSTM and CRF layers over PyTorch's `bert-base-uncased` pre-trained model
+- Added a weight matrix to the loss function to implement `weighted CrossEntropyLoss`
+
 ## Credits
 
 Modified version of the original repo @ `pranav-ust/BERT-keyphrase-extraction`
+
