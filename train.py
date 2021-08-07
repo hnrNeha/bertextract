@@ -11,7 +11,8 @@ import torch.nn as nn
 from torch.optim.lr_scheduler import LambdaLR
 from tqdm import trange
 
-from pytorch_pretrained_bert import BertForTokenClassification
+from pytorch_pretrained_bert import BertConfig
+from model import CustomBERTModel
 
 from data_loader import DataLoader
 from evaluate import evaluate
@@ -104,6 +105,7 @@ def train_and_evaluate(model, train_data, val_data, optimizer, scheduler, params
         # data iterator for training
         train_data_iterator = data_loader.data_iterator(
             train_data, shuffle=True)
+
         # Train for one epoch on training set
         train(model, train_data_iterator, optimizer, scheduler, params)
 
@@ -189,13 +191,15 @@ if __name__ == '__main__':
     params.train_size = train_data['size']
     params.val_size = val_data['size']
 
-    # Prepare model
-    model = BertForTokenClassification.from_pretrained(
-        args.bert_model_dir, num_labels=len(params.tag2idx))
+    # Prepare model: define hyperparameters and instantiate the model class
+    # model = BertForTokenClassification.from_pretrained(
+    #     args.bert_model_dir, num_labels=len(params.tag2idx))
+    config = BertConfig.from_json_file('model/bert_config.json')
+    model = CustomBERTModel(config, num_labels=len(params.tag2idx))
+
     model.to(params.device)
     if args.fp16:
         model.half()
-
     if params.n_gpu > 1 and args.multi_gpu:
         model = torch.nn.DataParallel(model)
 

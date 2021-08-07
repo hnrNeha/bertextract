@@ -4,12 +4,10 @@ import os
 import random
 import numpy as np
 import torch
-from pytorch_pretrained_bert import BertTokenizer, BertForTokenClassification, BertConfig
 import utils
 
-# from sentence_transformers import SentenceTransformer
-# from sklearn.feature_extraction.text import CountVectorizer
-# from sklearn.metrics.pairwise import cosine_similarity
+from pytorch_pretrained_bert import BertTokenizer, BertConfig, BertForTokenClassification
+from model import CustomBERTModel
 
 # Load the parameters from json file
 json_path = 'experiments/base_model/params.json'
@@ -139,7 +137,9 @@ data_masks = pred_data_iterator.gt(0)
 # Define the model
 config_path = 'model/bert_config.json'
 config = BertConfig.from_json_file(config_path)
-model = BertForTokenClassification(config, num_labels=len(params.tag2idx))
+model = CustomBERTModel(config, num_labels=len(params.tag2idx))
+# model = BertForTokenClassification(config, num_labels=len(params.tag2idx))
+
 model.to(params.device)
 # Reload weights from the saved file
 utils.load_checkpoint(

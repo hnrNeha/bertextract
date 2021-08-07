@@ -83,13 +83,15 @@ def set_logger(log_path):
     if not logger.handlers:
         # Logging to a file
         file_handler = logging.FileHandler(log_path)
-        file_handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s: %(message)s'))
+        file_handler.setFormatter(logging.Formatter(
+            '%(asctime)s:%(levelname)s: %(message)s'))
         logger.addHandler(file_handler)
 
         # Logging to console
         stream_handler = logging.StreamHandler()
         stream_handler.setFormatter(logging.Formatter('%(message)s'))
         logger.addHandler(stream_handler)
+
 
 def save_checkpoint(state, is_best, checkpoint):
     """Saves model and training parameters at checkpoint + 'last.pth.tar'. If is_best==True, also saves
@@ -108,6 +110,7 @@ def save_checkpoint(state, is_best, checkpoint):
     if is_best:
         shutil.copyfile(filepath, os.path.join(checkpoint, 'best.pth.tar'))
 
+
 def load_checkpoint(checkpoint, model, optimizer=None):
     """Loads model parameters (state_dict) from file_path. If optimizer is provided, loads state_dict of
     optimizer assuming it is present in checkpoint.
@@ -120,11 +123,9 @@ def load_checkpoint(checkpoint, model, optimizer=None):
     if not os.path.exists(checkpoint):
         raise ("File doesn't exist {}".format(checkpoint))
     checkpoint = torch.load(checkpoint)
-    # model.load_state_dict(checkpoint['state_dict'])
     model.load_state_dict(checkpoint['state_dict'])
 
     if optimizer:
         optimizer.load_state_dict(checkpoint['optim_dict'])
 
     return checkpoint
-

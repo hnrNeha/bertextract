@@ -8,7 +8,8 @@ import os
 import numpy as np
 import torch
 
-from pytorch_pretrained_bert import BertForTokenClassification, BertConfig
+from pytorch_pretrained_bert import BertConfig
+from model import CustomBERTModel
 
 from metrics import f1_score
 from metrics import classification_report
@@ -127,10 +128,11 @@ if __name__ == '__main__':
 
     logging.info("- done.")
 
-    # Define the model
+    # Instantiate the model
     # config_path = os.path.join(args.bert_model_dir, 'bert_config.json')
     config = BertConfig.from_json_file('model/bert_config.json')
-    model = BertForTokenClassification(config, num_labels=len(params.tag2idx))
+    model = CustomBERTModel(config, num_labels=len(params.tag2idx))
+    # model = BertForTokenClassification(config, num_labels=len(params.tag2idx))
 
     model.to(params.device)
     # Reload weights from the saved file
