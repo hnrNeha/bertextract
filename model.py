@@ -38,6 +38,9 @@ class CustomBERTModel(BertModel):
         self.rnn = nn.LSTM(self.config_hidden_size,
                            self.hidden_dim // 2, bidirectional=True)
         # Linear layer
+        self.linear = nn.Linear(self.hidden_dim, num_labels)
+
+        # CRF layer
         self.crf = CRF(num_labels, batch_first=True)
 
         self.apply(self.init_bert_weights)
@@ -53,13 +56,19 @@ class CustomBERTModel(BertModel):
         lstm_output, (hidden, cell) = self.rnn(sequence_output)
         # lstm_output = [batch_size, sequence_length, 256 * 2]
 
-        logits = self.crf.decode(lstm_output)
+        # Linear layer
+        linear_output = self.linear(lstm_output)
+        # linear_output = [batch_size, sequence_length, 2]
+
+        logits = self.crf.decode(linear_output)
+        logits = torch.tensor(logits)
+        logits = torch.reshape(logits, (-1, self.num_labels))
 
         if labels is not None:
-            # Calculate loss: loss of I is 30 times more
+            # a) Calculate loss: loss of I is 30 times more
             i30 = torch.tensor([30 / 31, 1 / 31], dtype=torch.float32)
 
-            # Calculate loss: loss of O is 30 times more
+            # b) Calculate loss: loss of O is 30 times more
             o30 = torch.tensor([1/31, 30/31], dtype=torch.float32)
 
             loss_fct = CrossEntropyLoss(weight=i30)
