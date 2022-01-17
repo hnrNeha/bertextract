@@ -40,5 +40,5 @@ On test set, we got:
 
 ## Credits
 
-This is a moodified version of the original repo `pranav-ust/BERT-keyphrase-extraction`
+This is a modified version of the original repo `pranav-ust/BERT-keyphrase-extraction`
 
